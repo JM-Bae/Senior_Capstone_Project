@@ -31,9 +31,9 @@ while cap.isOpened(): # True:
     faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5,
 			minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE)
 
-    for face_coordinates in faces:
-
-        x1, x2, y1, y2 = apply_offsets(face_coordinates, emotion_offsets)
+   # for face_coordinates in faces:
+    if len(faces):
+        x1, x2, y1, y2 = apply_offsets(faces[0], emotion_offsets)
         gray_face = gray_image[y1:y2, x1:x2]
         gray_face = preprocess_input(gray_face, True)
         gray_face = np.expand_dims(gray_face, 0)
@@ -43,7 +43,7 @@ while cap.isOpened(): # True:
         color = color.astype(int)
         color = color.tolist()
 
-        draw_bounding_box(face_coordinates, rgb_image, color)
+        draw_bounding_box(faces[0], rgb_image, color)
 
     bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
     cv2.imshow('window_frame', bgr_image)
