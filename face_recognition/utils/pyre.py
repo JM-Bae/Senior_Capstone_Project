@@ -11,7 +11,8 @@ from oauth2client.client import GoogleCredentials
 
 os.system("export GOOGLE_APPLICATION_CREDENTIALS=RP3VISION-59b8375d66b9.json")
 
-def firebase():
+def firebase(x1,x2,y1,y2):
+    
    with open('Output_File.json') as f:
       data = json.load(f)
 
@@ -26,6 +27,7 @@ def firebase():
    firebase.database()
 
    db = firebase.database()
+   '''
    data = {
 	   "joyLikelihood": data["responses"][0]["faceAnnotations"][0]["joyLikelihood"],
            "sorrowLikelihood": data["responses"][0]["faceAnnotations"][0]["sorrowLikelihood"],
@@ -35,5 +37,8 @@ def firebase():
            "blurredLikelihood": data["responses"][0]["faceAnnotations"][0]["blurredLikelihood"],
            "headwearLikelihood": data["responses"][0]["faceAnnotations"][0]["headwearLikelihood"]
    }
-
+   ''' 
+   data = {
+       "X1": x1, "X2": x2, "Y1": y1, "Y2": y2
+   }
    db.child("users").push(data)

@@ -5,8 +5,13 @@ from utils.inference import detect_faces
 from utils.inference import draw_bounding_box
 from utils.inference import apply_offsets
 from utils.preprocessor import preprocess_input
+import json
 
 from utils.pyre import firebase
+
+#json file prep
+with open('Output_File.json', 'w') as outfile:
+    outfile.close()
 
 # hyperparameters
 frame_window = 10
@@ -46,6 +51,7 @@ while cap.isOpened(): # True:
         color = color.tolist()
 
         draw_bounding_box(faces[0], rgb_image, color)
+        firebase(x1,x2,y1,y2)
 
     bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
     cv2.imshow('window_frame', bgr_image)
