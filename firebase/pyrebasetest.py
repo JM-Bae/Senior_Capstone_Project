@@ -1,11 +1,6 @@
-import os
-import argparse
-import base64
-import json
-import pandas as pd
-import numpy as np
 import pyrebase
 
+# https://console.firebase.google.com/u/0/project/emotion-recognition-database/database/emotion-recognition-database/data
 
 def firebase():
     
