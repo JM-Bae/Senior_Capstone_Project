@@ -1,8 +1,9 @@
 import pyrebase
+import time
 
 # https://console.firebase.google.com/u/0/project/emotion-recognition-database/database/emotion-recognition-database/data
 
-def firebase():
+def firebase(num):
     
    config = {
      "apiKey": "AIzaSyDeoBpT_LE_ABbneoeoYSWVcavpZbxse78",
@@ -16,7 +17,7 @@ def firebase():
 
    db = firebase.database()
    data = {
-	   "joyLikelihood": "test",
+	   "joyLikelihood": str(num),
            "sorrowLikelihood": "test",
 	   "angerLikelihood": "test",
            "underExposedLikelihood": "test",
@@ -25,6 +26,10 @@ def firebase():
            "headwearLikelihood": "test"
    }
 
-   db.child("users").push(data)
+   db.child("users").child("LZ73PhbxtQxeCKIL8UN").push(data)
 
-firebase()
+if __name__ == "__main__":
+
+  for i in range(5):
+    firebase(i)
+    time.sleep(.5)
