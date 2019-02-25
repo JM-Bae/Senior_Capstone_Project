@@ -1,0 +1,80 @@
+[debug] [2019-02-24T03:40:04.473Z] ----------------------------------------------------------------------
+[debug] [2019-02-24T03:40:04.476Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Silverstone\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-02-24T03:40:04.476Z] CLI Version:   6.4.0
+[debug] [2019-02-24T03:40:04.476Z] Platform:      win32
+[debug] [2019-02-24T03:40:04.476Z] Node Version:  v11.10.0
+[debug] [2019-02-24T03:40:04.477Z] Time:          Sat Feb 23 2019 19:40:04 GMT-0800 (Pacific Standard Time)
+[debug] [2019-02-24T03:40:04.477Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-24T03:40:04.489Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-24T03:40:04.490Z] > authorizing via signed-in user
+[debug] [2019-02-24T03:40:04.492Z] [iam] checking project emotion-recognition-database for permissions ["firebase.projects.get"]
+[debug] [2019-02-24T03:40:04.494Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database:testIamPermissions  
+
+[debug] [2019-02-24T03:40:06.194Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-24T03:40:06.197Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database  
+ 
+[debug] [2019-02-24T03:40:06.761Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\Silverstone\Desktop\firebase-tutorial'...
+[info] 
+[debug] [2019-02-24T03:40:06.763Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/241127961624/clients/_:getWebAppConfig  
+ 
+[debug] [2019-02-24T03:40:44.965Z] Error: connect ETIMEDOUT 2607:f8b0:4007:806::200a:443
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1083:14)
+[error] 
+[error] Error: Server Error. connect ETIMEDOUT 2607:f8b0:4007:806::200a:443
+[debug] [2019-02-24T03:40:54.121Z] ----------------------------------------------------------------------
+[debug] [2019-02-24T03:40:54.124Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Silverstone\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-02-24T03:40:54.124Z] CLI Version:   6.4.0
+[debug] [2019-02-24T03:40:54.124Z] Platform:      win32
+[debug] [2019-02-24T03:40:54.124Z] Node Version:  v11.10.0
+[debug] [2019-02-24T03:40:54.126Z] Time:          Sat Feb 23 2019 19:40:54 GMT-0800 (Pacific Standard Time)
+[debug] [2019-02-24T03:40:54.126Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-24T03:40:54.136Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-24T03:40:54.136Z] > authorizing via signed-in user
+[debug] [2019-02-24T03:40:54.136Z] [iam] checking project emotion-recognition-database for permissions ["firebase.projects.get"]
+[debug] [2019-02-24T03:40:54.138Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database:testIamPermissions  
+
+[debug] [2019-02-24T03:40:54.370Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-24T03:40:54.371Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database  
+ 
+[debug] [2019-02-24T03:40:54.975Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\Silverstone\Desktop\firebase-tutorial'...
+[info] 
+[debug] [2019-02-24T03:40:54.981Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/241127961624/clients/_:getWebAppConfig  
+ 
+[debug] [2019-02-24T03:40:55.881Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-02-24T23:53:23.990Z] ----------------------------------------------------------------------
+[debug] [2019-02-24T23:53:23.992Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Silverstone\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-02-24T23:53:23.992Z] CLI Version:   6.4.0
+[debug] [2019-02-24T23:53:23.992Z] Platform:      win32
+[debug] [2019-02-24T23:53:23.992Z] Node Version:  v11.10.0
+[debug] [2019-02-24T23:53:23.994Z] Time:          Sun Feb 24 2019 15:53:23 GMT-0800 (Pacific Standard Time)
+[debug] [2019-02-24T23:53:23.994Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-02-24T23:53:24.007Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-02-24T23:53:24.007Z] > authorizing via signed-in user
+[debug] [2019-02-24T23:53:24.008Z] [iam] checking project emotion-recognition-database for permissions ["firebase.projects.get"]
+[debug] [2019-02-24T23:53:24.010Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-02-24T23:53:24.010Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-02-24T23:53:24.630Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-24T23:53:24.639Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database:testIamPermissions  
+
+[debug] [2019-02-24T23:53:26.302Z] <<< HTTP RESPONSE 200
+[debug] [2019-02-24T23:53:26.306Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/emotion-recognition-database  
+ 
+[debug] [2019-02-24T23:53:27.111Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\Silverstone\Desktop\firebase-tutorial'...
+[info] 
+[debug] [2019-02-24T23:53:27.116Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/241127961624/clients/_:getWebAppConfig  
+ 
+[debug] [2019-02-24T23:53:28.230Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
