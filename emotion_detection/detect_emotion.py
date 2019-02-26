@@ -1,8 +1,10 @@
 from statistics import mode
-
+from threading import Thread
 import cv2
 from keras.models import load_model
 import numpy as np
+import pandas as pd
+import datetime
 
 from utils.datasets import get_labels
 from utils.inference import detect_faces
@@ -11,6 +13,10 @@ from utils.inference import draw_bounding_box
 from utils.inference import apply_offsets
 from utils.inference import load_detection_model
 from utils.preprocessor import preprocess_input
+from utils.pyre import firebase
+from utils.batch_emotions import push_batch
+from utils.batch_emotions import background_timer
+import utils.globals as globals
 
 # parameters for loading data and images
 detection_model_path = 'models/haarcascade_frontalface_default.xml'
@@ -30,6 +36,11 @@ emotion_target_size = emotion_classifier.input_shape[1:3]
 
 # starting lists for calculating modes
 emotion_window = []
+
+emotion_data = pd.DataFrame()
+emotions = []
+timer = Thread(target=background_timer)
+timer.start()
 
 # starting video streaming
 cv2.namedWindow('window_frame')
@@ -84,7 +95,21 @@ while video_capture.isOpened():
         draw_text(faces[0], rgb_image, emotion_mode,
                   color, 0, -45, 1, 1)
 
+        # Batch Process Emotions
+        emotions.append([emotion_text,str(datetime.datetime.now())])
+
+        if not globals.thread_busy:
+            emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp'])
+            thread = Thread(target = push_batch, args = emotion_data)
+            thread.start()
+            thread.join()
+            globals.thread_busy = True            
+            emotions = []
+
     bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
     cv2.imshow('window_frame', bgr_image)
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        globals.exit_flag = True
         break
+
+timer.join()
