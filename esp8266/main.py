@@ -1,7 +1,10 @@
+
 import machine
 import utime
+#import time
 
-machine.Pin(2, machine.Pin.OUT)
+
+#machine.Pin(2, machine.Pin.OUT)
 
 
 while True:
@@ -22,8 +25,11 @@ while True:
   print(cm)
   if cm < 30:
     machine.Pin(2, machine.Pin.OUT)
+    machine.Pin(0, machine.Pin.OUT)
   else:
     machine.Pin(2, machine.Pin.IN)
+    machine.Pin(0, machine.Pin.IN)
 
     
   utime.sleep(.01)
+
