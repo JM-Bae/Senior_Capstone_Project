@@ -109,7 +109,8 @@ if __name__ == "__main__":
                     color, 0, -45, 1, 1)
 
             # Batch Process Emotions
-            emotions.append([emotion_text,str(datetime.datetime.now())])
+            now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            emotions.append([emotion_text,now])
 
             if (not getthreadflag()):
                 emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp'])

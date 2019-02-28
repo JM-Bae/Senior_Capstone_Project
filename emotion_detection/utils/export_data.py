@@ -8,7 +8,7 @@ Batch_Q = Queue()
 exit_flag = None
 thread_busy = True
 
-def firebase(emotion):
+def firebase(emotion, timestamp):
     config = {
         "apiKey": "AIzaSyDeoBpT_LE_ABbneoeoYSWVcavpZbxse78",
         "authDomain": "emotion-recognition-database.firebaseapp.com",
@@ -21,7 +21,8 @@ def firebase(emotion):
 
     db = firebase.database()
     data = {
-       "emotions": emotion
+       "Emotions": emotion,
+       "Timestamp":timestamp
     }
 
     db.child("users").push(data)
@@ -60,7 +61,9 @@ def push_batch():
 
     if not Batch_Q.empty():
         data = Batch_Q.get()
-        firebase(data.iloc[0]["emotions"])
-        print(data.iloc[0])
+        firebase(data.iloc[0]["emotions"], data.iloc[0]["TimeStamp"])
+        
+        # print data locally
+        #print(data.iloc[0])
 
     
