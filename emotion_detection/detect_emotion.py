@@ -4,7 +4,7 @@ import cv2
 from keras.models import load_model
 import numpy as np
 import pandas as pd
-import datetime, time
+import datetime
 
 from utils.datasets import get_labels
 from utils.inference import detect_faces
@@ -13,17 +13,17 @@ from utils.inference import draw_bounding_box
 from utils.inference import apply_offsets
 from utils.inference import load_detection_model
 from utils.preprocessor import preprocess_input
-from utils.pyre import firebase
-from utils.batch_emotions import push_batch, getthreadflag
-from utils.batch_emotions import background_timer, setexitflag, setthreadflag
-from utils.batch_emotions import exit_flag, thread_busy, Batch_Q
-#import utils.glbs as glbs
+from utils.export_data import push_batch, background_timer
+from utils.export_data import getthreadflag, setexitflag, setthreadflag
+from utils.export_data import exit_flag, thread_busy, Batch_Q
 
 if __name__ == "__main__":
+    # global variables
     global exit_flag
     global thread_busy
     global Batch_Q
 
+    # initialize global variables
     setexitflag(False)
     setthreadflag(True)
 
@@ -46,12 +46,14 @@ if __name__ == "__main__":
     # starting lists for calculating modes
     emotion_window = []
 
+    # dataframe to hold batch emotion data
     emotion_data = pd.DataFrame()
     emotions = []
+    
+    # kick off external thread to push data to firebase
     timer = Thread(target=background_timer)
     timer.start()
-#    thread = Thread(target = push_batch)
-#    thread.start()    
+
 
     # starting video streaming
     cv2.namedWindow('window_frame')
@@ -112,15 +114,13 @@ if __name__ == "__main__":
             if (not getthreadflag()):
                 emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp'])
                 Batch_Q.put(emotion_data)
-                
-                setthreadflag(True)                            
+                setthreadflag(True)                         
                 emotions = []
-                print("Testing")
-                print(thread_busy)
 
         bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
         cv2.imshow('window_frame', bgr_image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             setexitflag(True)
+            timer.join()
             break
-    timer.join()
+    
