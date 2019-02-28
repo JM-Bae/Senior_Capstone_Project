@@ -18,10 +18,10 @@ def firebase(emotion):
 
     db = firebase.database()
     data = {
-        emotion
+       "emotions": emotion
     }
 
-    db.child("users").child("test1").push(data)
+    db.child("users").push(data)
 
 
 if __name__ == "__main__":
