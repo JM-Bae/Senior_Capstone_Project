@@ -49,11 +49,10 @@ if __name__ == "__main__":
     # dataframe to hold batch emotion data
     emotion_data = pd.DataFrame()
     emotions = []
-    
+
     # kick off external thread to push data to firebase
     timer = Thread(target=background_timer)
     timer.start()
-
 
     # starting video streaming
     cv2.namedWindow('window_frame')
@@ -103,19 +102,20 @@ if __name__ == "__main__":
 
             color = color.astype(int)
             color = color.tolist()
-            
+
             draw_bounding_box(faces[0], rgb_image, color)
             draw_text(faces[0], rgb_image, emotion_mode,
-                    color, 0, -45, 1, 1)
+                      color, 0, -45, 1, 1)
 
             # Batch Process Emotions
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            emotions.append([emotion_text,now])
+            emotions.append([emotion_text, emotion_probability, now])
 
             if (not getthreadflag()):
-                emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp'])
+                emotion_data = pd.DataFrame(
+                    emotions, columns=['emotions', 'certainty', 'timestamp'])
                 Batch_Q.put(emotion_data)
-                setthreadflag(True)                         
+                setthreadflag(True)
                 emotions = []
 
         bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
@@ -124,4 +124,3 @@ if __name__ == "__main__":
             setexitflag(True)
             timer.join()
             break
-    
