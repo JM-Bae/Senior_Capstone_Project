@@ -23,7 +23,7 @@ def firebase(emotion, certainty, timestamp):
     refKey = db.generate_key()
     data = {
         "events/"+refKey: {
-            "emotions": emotion,
+            "emotion": emotion,
             "certainty": certainty,
             "timestamp": timestamp
         },

@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
             if (not getthreadflag()):
                 emotion_data = pd.DataFrame(
-                    emotions, columns=['emotions', 'certainty', 'timestamp'])
+                    emotions, columns=['emotion', 'certainty', 'timestamp'])
                 Batch_Q.put(emotion_data)
                 setthreadflag(True)
                 emotions = []
