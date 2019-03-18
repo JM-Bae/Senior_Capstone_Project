@@ -5,6 +5,8 @@ from keras.models import load_model
 import numpy as np
 import pandas as pd
 import datetime
+import RPi.GPIO as GPIO
+
 
 from utils.datasets import get_labels
 from utils.inference import detect_faces
@@ -16,6 +18,12 @@ from utils.preprocessor import preprocess_input
 from utils.export_data import push_batch, background_timer
 from utils.export_data import getthreadflag, setexitflag, setthreadflag
 from utils.export_data import exit_flag, thread_busy, Batch_Q
+
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(4,GPIO.IN)
+
 
 if __name__ == "__main__":
     # global variables
@@ -49,16 +57,26 @@ if __name__ == "__main__":
     # dataframe to hold batch emotion data
     emotion_data = pd.DataFrame()
     emotions = []
-
+    
     # kick off external thread to push data to firebase
     timer = Thread(target=background_timer)
     timer.start()
 
+
     # starting video streaming
-    cv2.namedWindow('window_frame')
+    cv2.namedWindow('E.D.D', cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('E.D.D', 600,600)
+
     video_capture = cv2.VideoCapture(0)
 
+    video_capture.set(4,320)
+    video_capture.set(3,180)
+
+
+
     while video_capture.isOpened():
+
+
         _, bgr_image = video_capture.read()
         gray_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
         rgb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
@@ -100,27 +118,34 @@ if __name__ == "__main__":
             else:
                 color = emotion_probability * np.asarray((0, 255, 0))
 
+
             color = color.astype(int)
             color = color.tolist()
-
+            
             draw_bounding_box(faces[0], rgb_image, color)
             draw_text(faces[0], rgb_image, emotion_mode,
-                      color, 0, -45, 1, 1)
+                    color, 0, -45, 1, 1)
 
             # Batch Process Emotions
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            emotions.append([emotion_text, emotion_probability, now])
+            emotions.append([emotion_text,now,emotion_probability])
+
+      
 
             if (not getthreadflag()):
-                emotion_data = pd.DataFrame(
-                    emotions, columns=['emotion', 'certainty', 'timestamp'])
+                
+                emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp','certainty'])
                 Batch_Q.put(emotion_data)
-                setthreadflag(True)
+                setthreadflag(True)                         
                 emotions = []
+                
+        while GPIO.input(4) == True:
+            print("Pause Recording...")
 
         bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
-        cv2.imshow('window_frame', bgr_image)
+        cv2.imshow('E.D.D', bgr_image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             setexitflag(True)
             timer.join()
             break
+    
