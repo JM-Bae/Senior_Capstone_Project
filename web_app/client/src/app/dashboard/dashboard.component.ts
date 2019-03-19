@@ -38,10 +38,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .GetCounts()
       .snapshotChanges(['child_changed'])
       .subscribe(actions => {
-        this.countsData$ = actions.map(action => ({
-          emotion: this.titleCase(action.payload.key),
-          count: action.payload.val().count
-        }));
+        this.countsData$ = actions
+          .filter(action => action.payload.val().count !== 0)
+          .map(action => ({
+            emotion: this.titleCase(action.payload.key),
+            count: action.payload.val().count
+          }));
       });
     this.eventsDataSub = this.firebaseService
       .GetEvents()

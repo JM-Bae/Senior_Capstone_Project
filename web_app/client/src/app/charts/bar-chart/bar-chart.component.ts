@@ -2,23 +2,31 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { BaseChartDirective } from 'ng4-charts/ng4-charts';
 import { Chart, ChartDataSets } from 'chart.js';
 import { BehaviorSubject } from 'rxjs';
+import { EmotionColor } from '../EmotionColor';
 
 export const chartColors = {
   red: 'rgb(255, 99, 132)', // anger
-  orange: 'rgb(255, 159, 64)',
+  orange: 'rgb(255, 159, 64)', // (fear)
   yellow: 'rgb(255, 205, 86)', // happy
-  green: 'rgb(45, 192, 45)', // fear
+  green: 'rgb(45, 192, 45)', // neutral
   blue: 'rgb(54, 162, 235)', // surprise
   darkblue: 'rgb(24, 42, 75)', // sad
-  purple: 'rgb(153, 102, 255)', // disgust
+  purple: 'rgb(153, 102, 255)', // (disgust)
   grey: 'rgb(231, 238, 235)',
   darkgrey: 'rgb(81, 88, 85)',
   black: 'rgb(20, 20, 20)',
-  white: 'rgb(255, 255, 255)' // neutral
+  white: 'rgb(255, 255, 255)'
 };
 const initialState = {
   datasets: [{ data: [] }]
 };
+// const concat = (x, y) => { x.concat(y)};
+// const flatMap = (f, arr) => {
+//   return arr.map(f).reduce(concat, []);
+// }
+// Array.prototype.flatMap = (f) => {
+//   return flatMap(f, this);
+// }
 
 @Component({
   selector: 'app-bar-chart',
@@ -38,19 +46,7 @@ export class BarChartComponent implements OnInit {
   private _data = new BehaviorSubject<any[]>([]);
   public barChartLabels: string[];
   public barChartData: any = initialState;
-  public barChartColors: any[] = [
-    {
-      backgroundColor: [
-        chartColors.red, // anger
-        chartColors.purple, // disgust
-        chartColors.green, // fear
-        chartColors.yellow, // happy
-        chartColors.white, // neutral
-        chartColors.darkblue, // sad
-        chartColors.blue // surprise
-      ]
-    }
-  ];
+  public barChartColors: any[] = [];
   public barChartLegend = false;
   public options: any = {
     title: {
@@ -97,13 +93,38 @@ export class BarChartComponent implements OnInit {
       this.barChartLabels = this.getLabels(x);
       this.barChartData = this.getCountData(x);
     });
+    // this.updateEmotionLabels();
   }
+
+  updateEmotionLabels() {}
 
   getLabels(data: any[]): any[] {
     if (!data) {
       return;
     }
-    return data.map(x => x.emotion);
+    const emotionLabels = data.map(x => x.emotion).sort();
+    this.barChartColors = this.getColors(emotionLabels);
+    return emotionLabels;
+  }
+
+  getColors(data: string[]): any[] {
+    if (!data) {
+      return;
+    }
+    const newColorArray = [];
+    data.map(emotionType => {
+      EmotionColor.filter(colorItem => colorItem.emotion === emotionType).map(
+        item => {
+          newColorArray.push(item.color);
+        }
+      );
+    });
+    const newColors = [
+      {
+        backgroundColor: newColorArray
+      }
+    ];
+    return newColors;
   }
 
   getCountData(data: any[]): number[] {
