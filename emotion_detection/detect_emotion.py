@@ -19,7 +19,6 @@ from utils.export_data import push_batch, background_timer
 from utils.export_data import getthreadflag, setexitflag, setthreadflag
 from utils.export_data import exit_flag, thread_busy, Batch_Q
 
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(4,GPIO.IN)
@@ -124,7 +123,7 @@ if __name__ == "__main__":
             
             draw_bounding_box(faces[0], rgb_image, color)
             draw_text(faces[0], rgb_image, emotion_mode,
-                    color, 0, -45, 1, 1)
+                    color, 0, -5, 0.5, 1)
 
             # Batch Process Emotions
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
