@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 import datetime
 import RPi.GPIO as GPIO
-
+import time
 
 from utils.datasets import get_labels
 from utils.inference import detect_faces
@@ -19,10 +19,12 @@ from utils.export_data import push_batch, background_timer
 from utils.export_data import getthreadflag, setexitflag, setthreadflag
 from utils.export_data import exit_flag, thread_busy, Batch_Q
 
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(4,GPIO.IN)
 
+reopenWindow = 0
 
 if __name__ == "__main__":
     # global variables
@@ -56,33 +58,33 @@ if __name__ == "__main__":
     # dataframe to hold batch emotion data
     emotion_data = pd.DataFrame()
     emotions = []
-    
+
     # kick off external thread to push data to firebase
     timer = Thread(target=background_timer)
     timer.start()
 
 
     # starting video streaming
-    cv2.namedWindow('E.D.D', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('E.D.D', 600,600)
+    cv2.namedWindow('E.D.D.', cv2.WND_PROP_FULLSCREEN) #cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('E.D.D.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
+    cv2.resizeWindow('E.D.D.', 600,480)
+    image = cv2.imread('image.PNG')
+   
     video_capture = cv2.VideoCapture(0)
 
     video_capture.set(4,320)
     video_capture.set(3,180)
 
 
-
     while video_capture.isOpened():
-
-
+        reopenWindow = 0
         _, bgr_image = video_capture.read()
         gray_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2GRAY)
         rgb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
         faces = detect_faces(face_detection, gray_image)
 
         if len(faces):
-
             x1, x2, y1, y2 = apply_offsets(faces[0], emotion_offsets)
             gray_face = gray_image[y1:y2, x1:x2]
             try:
@@ -120,7 +122,7 @@ if __name__ == "__main__":
 
             color = color.astype(int)
             color = color.tolist()
-            
+
             draw_bounding_box(faces[0], rgb_image, color)
             draw_text(faces[0], rgb_image, emotion_mode,
                     color, 0, -5, 0.5, 1)
@@ -129,22 +131,48 @@ if __name__ == "__main__":
             now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             emotions.append([emotion_text,now,emotion_probability])
 
-      
+
 
             if (not getthreadflag()):
-                
                 emotion_data = pd.DataFrame(emotions, columns=['emotions','TimeStamp','certainty'])
                 Batch_Q.put(emotion_data)
-                setthreadflag(True)                         
+                setthreadflag(True)
                 emotions = []
-                
-        while GPIO.input(4) == True:
-            print("Pause Recording...")
+
+
 
         bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
-        cv2.imshow('E.D.D', bgr_image)
+
+        cv2.imshow('E.D.D.', bgr_image)
+
+
+        while GPIO.input(4) == True:
+           
+            cv2.destroyWindow('E.D.D.')
+            cv2.waitKey(1)
+            cv2.namedWindow('User Not Detected', cv2.WND_PROP_FULLSCREEN) #cv2.WINDOW_NORMAL)
+            cv2.setWindowProperty('User Not Detected', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+
+            cv2.imshow('User Not Detected', image)
+            reopenWindow = 1
+
+
+        if reopenWindow == 1 and GPIO.input(4) == False:
+
+            cv2.destroyWindow('User Not Detected')
+            cv2.waitKey(1)
+
+
+            cv2.namedWindow('E.D.D.', cv2.WND_PROP_FULLSCREEN) #cv2.WINDOW_NORMAL)
+            cv2.setWindowProperty('E.D.D.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+
+            cv2.resizeWindow('E.D.D.', 600,480)
+            reopenWindow = 0
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             setexitflag(True)
             timer.join()
             break
-    
+
