@@ -73,8 +73,8 @@ if __name__ == "__main__":
    
     video_capture = cv2.VideoCapture(0)
 
-    video_capture.set(4,320)
-    video_capture.set(3,180)
+    video_capture.set(4,150)
+    video_capture.set(3,150)
 
 
     while video_capture.isOpened():
